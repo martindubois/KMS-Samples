@@ -1,0 +1,31 @@
+
+Author    KMS - Martin Dubois, P. Eng.
+Copyright (C) 2023 KMS
+License   http://www.apache.org/licenses/LICENSE-2.0
+Product   KMS-Samples
+File      _DocDev/Build.txt
+
+Name                _________________________________________________________
+
+Date and time       20 ______ - ______ - ______               ______ : ______
+
+Computer            _________________________________________________________
+
+File "Common/Version.h" - Edit the Version
+
+Version             ______ . ______ . ______ . ______ - _____________________
+                    {Ma}     {Mi}     {Bu}              {Type}
+
+File "_DocUser/KMS-Samples.ReadMe.txt"                                    [ ]
+File "ByteTool/_DocUser/KMS-Samples.ByteTool.ReadMe.txt"                  [ ]
+
+Tools "PowerShell" - In the product folder
+    .\Import\Binaries\Release_Static_x64\KMS-Build.exe                    [ ]
+
+Tools "GIT GUI"
+- Commit modified File with {Ma}.{Mi}.{Bu}[-{Type}] Windows as message    [ ]
+- Push the servers                                                        [ ]
+
+Time and duration   ______ : ______           ______ hours and ______ minutes
+
+Signature           _________________________________________________________
