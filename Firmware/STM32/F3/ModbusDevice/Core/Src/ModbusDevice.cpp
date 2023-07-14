@@ -3,7 +3,7 @@
 // Copyright (C) 2023 KMS
 // License   http://www.apache.org/licenses/LICENSE-2.0
 // Product   KMS-Samples
-// File      Firmware/STM32/F373xC/ModbusDevice/Core/Src/ModbusDevice.cpp
+// File      Firmware/STM32/F3/ModbusDevice/Core/Src/ModbusDevice.cpp
 
 #include "Component.h"
 
