@@ -26,7 +26,6 @@
 /CM7/Core/Src/stm32h7xx_it.c
 /CM7/Core/Src/syscalls.c
 /CM7/Core/Src/sysmem.c
-/CM7/Core/Startup/
 /CM7/FATFS/
 /CM7/USB_HOST/
 
