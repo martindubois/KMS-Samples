@@ -3,7 +3,7 @@
 // Copyright (C) 2023 KMS
 // License   http://www.apache.org/licenses/LICENSE-2.0
 // Product   KMS-Samples
-// File      Firmware/STM32/H7/BL-USB/CM7/Core/Src/BootLoader.cpp
+// File      Firmware/STM32/H7/BL-SD-USB/CM7/Core/Src/BootLoader.cpp
 
 #include "Component.h"
 
@@ -16,7 +16,8 @@
 // Configuration
 // //////////////////////////////////////////////////////////////////////////
 
-#define USB_PREFIX "0:/"
+#define SD_PREFIX  "0:/"
+#define USB_PREFIX "1:/"
 
 #define LOCK_FILE_NAME   "BL-USB.lck"
 #define UPDATE_FILE_NAME "Update.elf"
@@ -33,12 +34,20 @@ static void UpdateIfNeeded(const char* aUpdate, const char* aLock);
 
 void BootLoader_Run()
 {
-    osDelay(350); // ticks
+	FRESULT lRet;
 
-	FRESULT lRet = f_mount(&USBHFatFS, USBHPath, 1);
+	lRet = f_mount(&SDFatFS, SDPath, 1);
 	if (FR_OK == lRet)
 	{
-		UpdateIfNeeded(USB_PREFIX UPDATE_FILE_NAME, USB_PREFIX LOCK_FILE_NAME);
+		UpdateIfNeeded(SD_PREFIX UPDATE_FILE_NAME, SD_PREFIX LOCK_FILE_NAME);
+	}
+
+    osDelay(350); // ticks
+
+	lRet = f_mount(&USBHFatFS, USBHPath, 1);
+	if (FR_OK == lRet)
+	{
+		UpdateIfNeeded(USB_PREFIX UPDATE_FILE_NAME, SD_PREFIX LOCK_FILE_NAME);
 	}
 
 	StartApplication();
