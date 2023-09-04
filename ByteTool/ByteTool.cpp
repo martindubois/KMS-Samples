@@ -11,6 +11,7 @@
 #include <KMS/Cfg/Configurator.h>
 #include <KMS/Cfg/MetaData.h>
 #include <KMS/Dbg/Log.h>
+#include <KMS/Dbg/Log_Cfg.h>
 #include <KMS/Dbg/Stats.h>
 #include <KMS/Dbg/Stats_Timer.h>
 #include <KMS/Banner.h>
@@ -91,11 +92,12 @@ int main(int aCount, const char** aVector)
         ByteTool          lBT;
         Cfg::Configurator lC;
         Installer         lInstaller;
+        Dbg::Log_Cfg      lLogCfg(&Dbg::gLog);
 
         lC.AddConfigurable(&lBT);
         lC.AddConfigurable(&lInstaller);
 
-        lC.AddConfigurable(&Dbg::gLog);
+        lC.AddConfigurable(&lLogCfg);
         lC.AddConfigurable(&Dbg::gStats);
 
         lC.ParseFile(File::Folder::CURRENT, CONFIG_FILE);
