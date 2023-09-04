@@ -1,0 +1,33 @@
+
+# Author    KMS - Martin Dubois, P. Eng.
+# Copyright (C) 2023 KMS
+# License   http://www.apache.org/licenses/LICENSE-2.0
+# Product   KMS-Samples
+# File      Firmware/STM32/H7/BL-USB/.gitignore
+
+# ===== STM32Cube... ========================================================
+
+*.launch
+*.ld
+
+.settings/
+
+/.mxproject
+
+/CM4/
+
+/CM7/Core/Inc/FreeRTOSConfig.h
+/CM7/Core/Inc/main.h
+/CM7/Core/Inc/stm32h7xx_hal_conf.h
+/CM7/Core/Inc/stm32h7xx_hal_it.h
+/CM7/Core/Src/freertos.c
+/CM7/Core/Src/stm32h7xx_hal_msp.c
+/CM7/Core/Src/stm32h7xx_hal_timebase_tim.c
+/CM7/Core/Src/stm32h7xx_it.c
+/CM7/FATFS/
+/CM7/USB_HOST/
+
+/Common/
+/Drivers/
+/Middlewares/
+/ThreadSafe/

@@ -5,7 +5,7 @@
 # Product   KMS-Samples
 # File      .gitignore
 
-/Import/
+Import/
 
 # ===== Visual Studio =======================================================
 
