@@ -8,19 +8,16 @@
 #include <KMS/Base.h>
 
 // ==== Import/Includes =====================================================
-#include <KMS/Cfg/Configurator.h>
+#include <KMS/Banner.h>
 #include <KMS/Cfg/MetaData.h>
 #include <KMS/Dbg/Log.h>
-#include <KMS/Dbg/Log_Cfg.h>
-#include <KMS/Dbg/Stats.h>
-#include <KMS/Dbg/Stats_Timer.h>
-#include <KMS/Banner.h>
-#include <KMS/Installer.h>
-
-using namespace KMS;
+#include <KMS/File/Folder.h>
+#include <KMS/Main.h>
 
 // ===== Local ==============================================================
 #include "../Common/Version.h"
+
+using namespace KMS;
 
 // Configuration
 // //////////////////////////////////////////////////////////////////////////
@@ -51,6 +48,9 @@ public:
 
     int Run();
 
+    // ===== DI::Container ==================================================
+    virtual void Validate() const;
+
     // ===== Configurable attributes ========================================
     DI::File mSource;
 
@@ -76,44 +76,27 @@ static void DisplayValue(std::ostream& aOut, unsigned int aValue);
 
 int main(int aCount, const char** aVector)
 {
-    KMS_BANNER("KMS-Framework", "KMS-ByteTool");
+    KMS_BANNER("KMS-Framework", "ByteTool");
 
-    assert(1 <= aCount);
-    assert(NULL != aVector);
-    assert(NULL != aVector[0]);
-
-    int lResult = __LINE__;
-
-    auto lET = new Dbg::Stats_Timer("Main_ExecutionTime");
-    lET->Start();
-
-    try
+    KMS_MAIN_BEGIN;
     {
-        ByteTool          lBT;
-        Cfg::Configurator lC;
-        Installer         lInstaller;
-        Dbg::Log_Cfg      lLogCfg(&Dbg::gLog);
+        ByteTool lBT;
 
-        lC.AddConfigurable(&lBT);
-        lC.AddConfigurable(&lInstaller);
+        lConfigurator.AddConfigurable(&lBT);
 
-        lC.AddConfigurable(&lLogCfg);
-        lC.AddConfigurable(&Dbg::gStats);
+        lConfigurator.ParseFile(File::Folder::CURRENT, CONFIG_FILE);
 
-        lC.ParseFile(File::Folder::CURRENT, CONFIG_FILE);
-        lC.ParseArguments(aCount - 1, aVector + 1);
+        KMS_MAIN_PARSE_ARGS(aCount, aVector);
 
-        lInstaller.Run();
+        KMS_MAIN_VALIDATE;
 
         lResult = lBT.Run();
 
         std::cerr << lBT;
     }
-    KMS_CATCH_RESULT(lResult)
+    KMS_MAIN_END;
 
-    lET->Stop();
-
-    return lResult;
+    KMS_MAIN_RETURN;
 }
 
 // Public
@@ -143,6 +126,15 @@ int ByteTool::Run()
     }
 
     return 0;
+}
+
+// ===== DI::Container ==================================================
+
+void ByteTool::Validate() const
+{
+    DI::Dictionary::Validate();
+
+    KMS_EXCEPTION_ASSERT(File::Folder::NONE.DoesFileExist(mSource), RESULT_INVALID_CONFIG, "The source file does not exist", mSource);
 }
 
 // Internal
