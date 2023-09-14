@@ -1,0 +1,51 @@
+
+# Author    KMS - Martin Dubois, P. Eng.
+# Copyright (C) 2023 KMS
+# License   http://www.apache.org/licenses/LICENSE-2.0
+# Product   KMS-Samples
+# File      Firmware/STM32/H7/Me/.gitignore
+
+# ===== STM32Cube... ========================================================
+
+*.launch
+*.ld
+
+.settings/
+
+/CM4/
+
+/CM7/Core/Inc/FreeRTOSConfig.h
+/CM7/Core/Inc/ft6x06_conf.h
+/CM7/Core/Inc/is42s32800j_conf.h
+/CM7/Core/Inc/mt25tl01g_conf.h
+/CM7/Core/Inc/main.h
+/CM7/Core/Inc/RTE_Components.h
+/CM7/Core/Inc/stm32h7xx_hal_conf.h
+/CM7/Core/Src/freertos.c
+/CM7/Core/Src/main.c
+/CM7/Core/Src/stm32h7xx_hal_msp.c
+/CM7/Core/Src/stm32h7xx_hal_timebase_tim.c
+/CM7/Core/Src/stm32h7xx_it.c
+/CM7/Middlewares/
+/CM7/TouchGFX/App/
+/CM7/TouchGFX/assets/fonts/
+/CM7/TouchGFX/assets/texts/texts.xsd
+/CM7/TouchGFX/config/
+/CM7/TouchGFX/generated/
+/CM7/TouchGFX/gui/
+/CM7/TouchGFX/Me_backup.touchgfx
+/CM7/TouchGFX/simulator/
+/CM7/TouchGFX/target/
+
+/Common/
+/Config/
+/Drivers/
+/EWARM/
+/gcc/
+/MDK-ARM/
+/Middlewares/
+/STM32CubeIDE/CM4/
+
+/backup_STM32H747I-DISCO.ioc
+/changelog.txt
+/readme.md
