@@ -8,16 +8,16 @@
 # ===== STM32Cube... ========================================================
 
 *.launch
-*.ld
 
 .settings/
 
-/CM4/
+/CM4/Core/Inc/main.h
+/CM4/Core/Inc/stm32h7xx_hal_conf.h
+/CM4/Core/Inc/stm32h7xx_it.h
+/CM4/Core/Src/
+/CM4/TouchGFX/
 
 /CM7/Core/Inc/FreeRTOSConfig.h
-/CM7/Core/Inc/ft6x06_conf.h
-/CM7/Core/Inc/is42s32800j_conf.h
-/CM7/Core/Inc/mt25tl01g_conf.h
 /CM7/Core/Inc/main.h
 /CM7/Core/Inc/RTE_Components.h
 /CM7/Core/Inc/stm32h7xx_hal_conf.h
@@ -35,16 +35,19 @@
 /CM7/TouchGFX/gui/
 /CM7/TouchGFX/Me_backup.touchgfx
 /CM7/TouchGFX/simulator/
-/CM7/TouchGFX/target/
+/CM7/TouchGFX/target/generated/
+/CM7/TouchGFX/target/STM32TouchController.*
+/CM7/TouchGFX/target/TouchGFXGPIO.cpp
+/CM7/TouchGFX/target/TouchGFXHAL.*
 
 /Common/
 /Config/
-/Drivers/
+/Drivers/CMSIS/
+/Drivers/STM32H7xx_HAL_Driver/
 /EWARM/
 /gcc/
 /MDK-ARM/
 /Middlewares/
-/STM32CubeIDE/CM4/
 
 /backup_STM32H747I-DISCO.ioc
 /changelog.txt
