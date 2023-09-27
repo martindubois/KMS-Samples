@@ -32,15 +32,6 @@ using namespace KMS;
 #define SIZE_X_px (512)
 #define SIZE_Y_px (512)
 
-#define N_DEFAULT (1)
-#define N_MIN     (1)
-
-#define PERIOD_DEFAULT_ms (40)
-
-#define ZOOM_DEFAULT (1)
-#define ZOOM_MIN     (1)
-#define ZOOM_MAX     (4)
-
 static const Cfg::MetaData MD_FILE_NAME("FileName = {Path}");
 static const Cfg::MetaData MD_N        ("N = {Value}");
 static const Cfg::MetaData MD_PERIOD_ms("Period_ms = {Value}");
@@ -54,6 +45,17 @@ class RandomHisto : public DI::Dictionary
 
 public:
 
+    static const char   * FILE_NAME_DEFAULT;
+    static const uint32_t N_DEFAULT;
+    static const uint32_t N_MIN;
+    static const uint32_t PERIOD_DEFAULT_ms;
+
+    DI::String_Expand  mFileName;
+    DI::UInt<uint32_t> mN;
+
+    DI::UInt_Ptr<uint32_t> mPeriod_ms;
+    DI::UInt_Ptr<uint8_t>  mZoom;
+
     RandomHisto();
 
     int Run();
@@ -66,12 +68,6 @@ public:
     Graph::Histogram    mHistogram;
     Thread::Thread      mThread;
     WGDI::Window_Bitmap mWindow;
-
-    // ===== Configurable attributes ========================================
-    DI::String_Expand      mFileName;
-    DI::UInt<uint32_t>     mN;
-    DI::UInt_Ptr<uint32_t> mPeriod_ms;
-    DI::UInt_Ptr<uint8_t>  mZoom;
 
 };
 
@@ -104,21 +100,25 @@ int main(int aCount, const char** aVector)
 // Public
 // //////////////////////////////////////////////////////////////////////////
 
+const char   * RandomHisto::FILE_NAME_DEFAULT = "";
+const uint32_t RandomHisto::N_DEFAULT         = 1;
+const uint32_t RandomHisto::N_MIN             = 1;
+const uint32_t RandomHisto::PERIOD_DEFAULT_ms = 100;
+
 RandomHisto::RandomHisto()
-    : mHistogram(0.0, 256.0, 256)
-    // ===== Configurable attributes ========================================
-    , mN        (N_DEFAULT)
+    : mFileName(FILE_NAME_DEFAULT)
+    , mN       (N_DEFAULT)
     , mPeriod_ms(&mWindow.mPeriod_ms)
     , mZoom     (&mWindow.mZoom)
+    , mHistogram(0.0, 256.0, 256)
 {
-    AddEntry("FileName" , &mFileName, false, &MD_FILE_NAME);
+    AddEntry("FileName" , &mFileName , false, &MD_FILE_NAME);
     AddEntry("N"        , &mN        , false, &MD_N);
     AddEntry("Period_ms", &mPeriod_ms, false, &MD_PERIOD_ms);
     AddEntry("Zoom"     , &mZoom     , false, &MD_ZOOM);
 
     mWindow.mPeriod_ms = PERIOD_DEFAULT_ms;
-    mWindow.mTitle = "RandomHisto";
-    mWindow.mZoom = ZOOM_DEFAULT;
+    mWindow.mTitle     = "RandomHisto";
 }
 
 int RandomHisto::Run()
@@ -181,7 +181,7 @@ void RandomHisto::Validate() const
 {
     DI::Dictionary::Validate();
 
-    KMS_EXCEPTION_ASSERT(N_MIN    <= mN   , RESULT_INVALID_CONFIG, "The value of N is below the minimum value", "");
-    KMS_EXCEPTION_ASSERT(ZOOM_MAX >= mZoom, RESULT_INVALID_CONFIG, "The value of zoom is above the maximum value", "");
-    KMS_EXCEPTION_ASSERT(ZOOM_MIN <= mZoom, RESULT_INVALID_CONFIG, "The value of zoom is below the minimum value", "");
+    KMS_EXCEPTION_ASSERT(N_MIN                         <= mN   , RESULT_INVALID_CONFIG, "The value of N is below the minimum value"   , "");
+    KMS_EXCEPTION_ASSERT(WGDI::Window_Bitmap::ZOOM_MAX >= mZoom, RESULT_INVALID_CONFIG, "The value of zoom is above the maximum value", "");
+    KMS_EXCEPTION_ASSERT(WGDI::Window_Bitmap::ZOOM_MIN <= mZoom, RESULT_INVALID_CONFIG, "The value of zoom is below the minimum value", "");
 }

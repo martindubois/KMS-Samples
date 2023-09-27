@@ -44,15 +44,16 @@ class ByteTool : public DI::Dictionary
 
 public:
 
+    static const char* SOURCE_DEFAULT;
+
+    DI::File mSource;
+
     ByteTool();
 
     int Run();
 
     // ===== DI::Container ==================================================
     virtual void Validate() const;
-
-    // ===== Configurable attributes ========================================
-    DI::File mSource;
 
 // Internal
 
@@ -102,6 +103,8 @@ int main(int aCount, const char** aVector)
 // Public
 // //////////////////////////////////////////////////////////////////////////
 
+const char* ByteTool::SOURCE_DEFAULT = "stdin";
+
 std::ostream& operator << (std::ostream& aOut, const ByteTool& aBT)
 {
     aBT.Display(aOut);
@@ -109,7 +112,7 @@ std::ostream& operator << (std::ostream& aOut, const ByteTool& aBT)
     return aOut;
 }
 
-ByteTool::ByteTool() : mSource(stdin, "stdin")
+ByteTool::ByteTool() : mSource(stdin, SOURCE_DEFAULT)
 {
     AddEntry("Source", &mSource, false, &MD_SOURCE);
 
