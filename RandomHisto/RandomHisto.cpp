@@ -112,10 +112,12 @@ RandomHisto::RandomHisto()
     , mZoom     (&mWindow.mZoom)
     , mHistogram(0.0, 256.0, 256)
 {
-    AddEntry("FileName" , &mFileName , false, &MD_FILE_NAME);
-    AddEntry("N"        , &mN        , false, &MD_N);
-    AddEntry("Period_ms", &mPeriod_ms, false, &MD_PERIOD_ms);
-    AddEntry("Zoom"     , &mZoom     , false, &MD_ZOOM);
+    Ptr_OF<DI::Object> lEntry;
+
+    lEntry.Set(&mFileName , false); AddEntry("FileName" , lEntry, &MD_FILE_NAME);
+    lEntry.Set(&mN        , false); AddEntry("N"        , lEntry, &MD_N);
+    lEntry.Set(&mPeriod_ms, false); AddEntry("Period_ms", lEntry, &MD_PERIOD_ms);
+    lEntry.Set(&mZoom     , false); AddEntry("Zoom"     , lEntry, &MD_ZOOM);
 
     mWindow.mPeriod_ms = PERIOD_DEFAULT_ms;
     mWindow.mTitle     = "RandomHisto";
@@ -140,7 +142,7 @@ int RandomHisto::Run()
 
     mHistogram.Prepare();
 
-    mWindow.mBitmap.Init(SIZE_X_px, SIZE_Y_px, mHistogram.mBitmap.GetData());
+    mWindow.SetBitmap(&mHistogram.mBitmap);
 
     Callback<RandomHisto> lOnIterate(this, &RandomHisto::OnIterate);
 
@@ -148,7 +150,7 @@ int RandomHisto::Run()
 
     mThread.Start();
 
-    mWindow.Show();
+    mWindow.Run();
 
     mThread.StopAndWait(1000);
 

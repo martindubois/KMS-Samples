@@ -114,7 +114,9 @@ std::ostream& operator << (std::ostream& aOut, const ByteTool& aBT)
 
 ByteTool::ByteTool() : mSource(stdin, SOURCE_DEFAULT)
 {
-    AddEntry("Source", &mSource, false, &MD_SOURCE);
+    Ptr_OF<DI::Object> lEntry;
+
+    lEntry.Set(&mSource, false); AddEntry("Source", lEntry, &MD_SOURCE);
 
     memset(&mHistogram, 0, sizeof(mHistogram));
 }
