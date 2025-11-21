@@ -15,6 +15,8 @@
 
 #include "Test0.h"
 #include "Test1.h"
+#include "Test2.h"
+#include "Test3.h"
 
 using namespace KMS;
 
@@ -56,6 +58,8 @@ int main(int aCount, const char** aVector)
     {
     case 0: lTest = new Test0(); break;
     case 1: lTest = new Test1(); break;
+    case 2: lTest = new Test2(); break;
+    case 3: lTest = new Test3(); break;
 
     default:
         printf("USER ERROR  Invalid test index\n");
@@ -81,6 +85,8 @@ void DisplayUsage()
     printf("Usage: OvenSim.exe {TestIndex}\n");
     printf("    0  Heating at 90 %% - From 22 to ...\n");
     printf("    1  Cooling at  0 %% - From 1154 to ...\n");
+    printf("    2  From 22 to 1000\n");
+    printf("    3  From 1000 to 500\n");
 }
 
 int RunTest(ITest* aTest)
@@ -114,6 +120,11 @@ int RunTest(ITest* aTest)
         }
 
         lT_s += PERIOD_s;
+
+        if (1000 == lT_s)
+        {
+            printf("1000 s\n");
+        }
     }
 
     if (0 != lRet)

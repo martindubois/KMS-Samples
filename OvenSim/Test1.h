@@ -8,11 +8,9 @@
 #pragma once
 
 // ===== Local ==============================================================
-#include "Element.h"
-#include "ITest.h"
-#include "Oven.h"
+#include "Test_OpenLoop.h"
 
-class Test1 : public ITest
+class Test1 : public Test_OpenLoop
 {
 
 public:
@@ -21,13 +19,18 @@ public:
 
     // ===== ITest ==========================================================
     virtual ~Test1() override;
-    virtual bool Tick(double aT_s, double aPeriod_s) override;
-    virtual void PrintHeader(FILE* aCSV) const override;
-    virtual void PrintLine(double aT_s, FILE* aCSV) const override;
-
-private:
-
-    Element mElement;
-    Oven    mOven;
 
 };
+
+inline Test1::Test1()
+{
+    mElement.SetOvenTemp(1154.0);
+    mElement.SetTemp    (1187.0);
+
+    mOven.SetElementTemp(1187.0);
+    mOven.SetInWallTemp (1043.6);
+    mOven.SetOutWallTemp(  36.6);
+    mOven.SetTemp       (1154.0);
+}
+
+inline Test1::~Test1() {}

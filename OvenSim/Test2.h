@@ -3,25 +3,28 @@
 // Copyright (C) 2025 KMS
 // License   http://www.apache.org/licenses/LICENSE-2.0
 // Product   KMS-Samples
-// File      OvenSim/Test0.cpp
+// File      OvenSim/Test2.cpp
 
 #pragma once
 
 // ===== Local ==============================================================
-#include "Test_OpenLoop.h"
+#include "Test_PID.h"
 
-class Test0 : public Test_OpenLoop
+class Test2 : public Test_PID
 {
 
 public:
 
-    Test0();
+    Test2();
 
     // ===== ITest ==========================================================
-    virtual ~Test0() override;
+    virtual ~Test2() override;
 
 };
 
-inline Test0::Test0() { SetPower(0.9); }
+inline Test2::Test2()
+{
+    SetConsign(1000.0);
+}
 
-inline Test0::~Test0() {}
+inline Test2::~Test2() {}

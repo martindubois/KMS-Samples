@@ -27,10 +27,10 @@
 // //////////////////////////////////////////////////////////////////////////
 
 Oven::Oven()
-    : mElement_C(150.0)
-    , mInWall_C (150.0)
+    : mElement_C(ROOM_TEMP_C)
+    , mInWall_C (ROOM_TEMP_C)
     , mOutWall_C(ROOM_TEMP_C)
-    , mTemp_C   (150.0)
+    , mTemp_C   (ROOM_TEMP_C)
 {}
 
 bool Oven::Tick(double aT_s, double aPeriod_s)

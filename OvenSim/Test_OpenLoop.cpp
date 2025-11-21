@@ -3,32 +3,28 @@
 // Copyright (C) 2025 KMS
 // License   http://www.apache.org/licenses/LICENSE-2.0
 // Product   KMS-Samples
-// File      OvenSim/Test0.cpp
+// File      OvenSim/Test_OpenLoop.cpp
 
 #include "Component.h"
 
 // ===== Local ==============================================================
-#include "Test1.h"
+#include "Test_OpenLoop.h"
 
 // Public
 // //////////////////////////////////////////////////////////////////////////
 
-Test1::Test1()
-{
-    mElement.SetOvenTemp(1154.0);
-    mElement.SetTemp    (1187.0);
+Test_OpenLoop::Test_OpenLoop() {}
 
-    mOven.SetElementTemp(1187.0);
-    mOven.SetInWallTemp (1043.6);
-    mOven.SetOutWallTemp(  36.6);
-    mOven.SetTemp       (1154.0);
+void Test_OpenLoop::SetPower(double aPower)
+{
+    mElement.SetPower(aPower * 1200 * 3);
 }
 
 // ===== ITest ==============================================================
 
-Test1::~Test1() {}
+Test_OpenLoop::~Test_OpenLoop() {}
 
-bool Test1::Tick(double aT_s, double aPeriod_s)
+bool Test_OpenLoop::Tick(double aT_s, double aPeriod_s)
 {
     auto lResult = true;
 
@@ -36,15 +32,15 @@ bool Test1::Tick(double aT_s, double aPeriod_s)
     lResult &= mOven   .Tick(aT_s, aPeriod_s);
 
     auto lElementTemp_C = mElement.GetTemp();
-    auto lOvenTemp_C    = mOven.GetTemp();
+    auto lOvenTemp_C    = mOven   .GetTemp();
 
-    mElement.SetOvenTemp   (lOvenTemp_C);
+    mElement.SetOvenTemp   (lOvenTemp_C   );
     mOven   .SetElementTemp(lElementTemp_C);
 
     return lResult;
 }
 
-void Test1::PrintHeader(FILE* aCSV) const
+void Test_OpenLoop::PrintHeader(FILE* aCSV) const
 {
     printf(" Time   Elemen   Oven   In Wal  Out Wa\n");
     printf("   s       C       C       C       C\n");
@@ -56,7 +52,7 @@ void Test1::PrintHeader(FILE* aCSV) const
     }
 }
 
-void Test1::PrintLine(double aT_s, FILE* aCSV) const
+void Test_OpenLoop::PrintLine(double aT_s, FILE* aCSV) const
 {
     auto lOven_C = mOven.GetTemp();
 

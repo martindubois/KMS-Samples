@@ -13,12 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\KMS-uC">
+      <UniqueIdentifier>{499f29aa-5f35-4470-956e-22e8ff46967d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OvenSim.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Test0.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Element.cpp">
@@ -27,7 +27,19 @@
     <ClCompile Include="Oven.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Test1.cpp">
+    <ClCompile Include="Test_PID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\KMS-uC\Sources\Filter_MD.c">
+      <Filter>Source Files\KMS-uC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\KMS-uC\Sources\Filter_FIR.c">
+      <Filter>Source Files\KMS-uC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\KMS-uC\Sources\PID.c">
+      <Filter>Source Files\KMS-uC</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_OpenLoop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

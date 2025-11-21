@@ -22,9 +22,9 @@
 // //////////////////////////////////////////////////////////////////////////
 
 Element::Element()
-    : mOven_C(150.0)
+    : mOven_C(ROOM_TEMP_C)
     , mPower_W(0)
-    , mTemp_C(150.0)
+    , mTemp_C(ROOM_TEMP_C)
 {}
 
 bool Element::Tick(double aT_s, double aPeriod_s)
