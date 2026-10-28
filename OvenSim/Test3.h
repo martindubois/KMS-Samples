@@ -34,9 +34,7 @@ inline Test3::Test3()
     mOven.SetOutWallTemp(27.1);
     mOven.SetTemp(lOven_C);
 
-    Filter_MD_Reset(&mConsignFilter, static_cast<int32_t>(lOven_C * 256));
-
-    SetConsign(100.0);
+    SetSetpoint(100.0);
 }
 
 inline Test3::~Test3() {}

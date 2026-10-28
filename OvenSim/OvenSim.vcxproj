@@ -133,9 +133,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\KMS-uC\Sources\Filter_FIR.c" />
     <ClCompile Include="..\..\KMS-uC\Sources\Filter_MD.c" />
-    <ClCompile Include="..\..\KMS-uC\Sources\PID.c" />
+    <ClCompile Include="..\..\KMS-uC\Sources\Filter_SP.c" />
+    <ClCompile Include="..\..\KMS-uC\Sources\PID_Oven.c" />
+    <ClCompile Include="..\..\KMS-uC\Sources\Table.c" />
     <ClCompile Include="Element.cpp" />
     <ClCompile Include="Oven.cpp" />
     <ClCompile Include="OvenSim.cpp" />

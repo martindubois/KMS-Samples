@@ -16,7 +16,7 @@
 // Constants
 // //////////////////////////////////////////////////////////////////////////
 
-static const int16_t FILTER_TABLE_DEC[] =
+static const int16_t FILTER_TABLE_DEC_VALUES[] =
 {
       3, //    0 -  200 C ->  0.1  C/s
       5, //  100 -  200 C ->  0.2  C/s
@@ -33,7 +33,14 @@ static const int16_t FILTER_TABLE_DEC[] =
     369, // 1200 - 1300 C -> 14.4  C/s
 };
 
-static const int16_t FILTER_TABLE_INC[] =
+static const Table FILTER_TABLE_DEC =
+{
+    FILTER_TABLE_DEC_VALUES,
+    100 << 8,
+    13
+};
+
+static const int16_t FILTER_TABLE_INC_VALUES[] =
 {
     37, //    0 -  200 C -> 1.45 C/s
     33, //  100 -  200 C -> 1.3  C/s
@@ -50,37 +57,76 @@ static const int16_t FILTER_TABLE_INC[] =
      2, // 1200 - 1300 C -> 0.07 C/s
 };
 
-static const Filter_MD_Table FILTER_TABLE =
+static const Table FILTER_TABLE_INC =
 {
-    FILTER_TABLE_DEC,
-    FILTER_TABLE_INC,
-    100,
-    13,
-    100
+    FILTER_TABLE_INC_VALUES,
+    100 << 8,
+    13
 };
+
+static const Filter_SP_Table FILTER_TABLE =
+{
+    &FILTER_TABLE_DEC,
+    &FILTER_TABLE_INC,
+    180,
+};
+
+static const int16_t PID_TABLE_VALUES[] =
+{
+    1000, //    0 -  100 C -> 10 %
+    1500, //  100 -  200 C -> 15 %
+    2000, //  200 -  300 C -> 20 %
+    2500, //  300 -  400 C -> 25 %
+    3000, //  400 -  500 C -> 30 %
+    3500, //  500 -  600 C -> 35 %
+    4000, //  600 -  700 C -> 40 %
+    4500, //  700 -  800 C -> 45 %
+    5000, //  800 -  900 C -> 50 %
+    5500, //  900 - 1000 C -> 55 %
+    6000, // 1000 - 1100 C -> 60 %
+    6500, // 1100 - 1200 C -> 65 %
+    7000, // 1200 - 1300 C -> 70 %
+};
+
+static const Table PID_TABLE =
+{
+    PID_TABLE_VALUES,
+    100 << 8,
+    13
+};
+
+// Variable
+// //////////////////////////////////////////////////////////////////////////
+
+static Test_PID* sThis;
+
+// Static function declarations
+// //////////////////////////////////////////////////////////////////////////
+
+static int32_t GetFilteredSetpoint();
+static int32_t GetOvenTemperature();
 
 // Public
 // //////////////////////////////////////////////////////////////////////////
 
 Test_PID::Test_PID()
 {
-    Filter_MD_Init(&mConsignFilter, &FILTER_TABLE);
-    Filter_MD_Reset(&mConsignFilter, static_cast<int32_t>(ROOM_TEMP_C * 256));
+    sThis = this;
 
-    Filter_FIR_Init(&mTempFilter);
+    Filter_SP_Init(&mSetpointFilter, &FILTER_TABLE, GetOvenTemperature);
 
-    PID_Init(&mPID, &mConsignFilter, &mTempFilter);
-    PID_SetParams(&mPID, 1000, 5, 1000);
+    PID_Oven_Init(&mPID, &PID_TABLE, GetFilteredSetpoint, GetOvenTemperature);
+    PID_Oven_SetParams(&mPID, 1000, 5, 1000);
 }
 
-void Test_PID::SetConsign(double aConsign_C)
+void Test_PID::SetSetpoint(double aSetpoint_C)
 {
-    Filter_MD_SetInput(&mConsignFilter, static_cast<int32_t>(aConsign_C * 256));
+    Filter_SP_SetInput(&mSetpointFilter, static_cast<int32_t>(aSetpoint_C * 256));
 }
 
 // ===== ITest ==============================================================
 
-Test_PID::~Test_PID() {}
+Test_PID::~Test_PID() { sThis = nullptr; }
 
 bool Test_PID::Tick(double aT_s, double aPeriod_s)
 {
@@ -97,13 +143,11 @@ bool Test_PID::Tick(double aT_s, double aPeriod_s)
 
     auto lPeriod_ms = static_cast<uint8_t>(aPeriod_s * 1000);
 
-    Filter_FIR_NewSample(&mTempFilter, static_cast<int32_t>(lOvenTemp_C * 256.0));
+    Filter_SP_Tick(&mSetpointFilter, lPeriod_ms);
 
-    Filter_MD_Tick(&mConsignFilter, lPeriod_ms);
+    PID_Oven_Tick(&mPID, lPeriod_ms);
 
-    PID_Tick(&mPID, lPeriod_ms);
-
-    auto lPower = (static_cast<double>(PID_GetOutput_FP(&mPID)) / 256.0) / 10000.0;
+    auto lPower = (static_cast<double>(PID_Oven_GetOutput_FP(&mPID)) / 256.0) / 10000.0;
 
     mElement.SetPower(lPower * 1200 * 3);
 
@@ -124,13 +168,13 @@ void Test_PID::PrintHeader(FILE* aCSV) const
 
 void Test_PID::PrintLine(double aT_s, FILE* aCSV) const
 {
-    auto lFCon_C = static_cast<double>(Filter_MD_GetOutput_FP(&mConsignFilter)) / 256.0;
-    auto lOven_C = mOven.GetTemp();
-    auto lPower  = (static_cast<double>(PID_GetOutput_FP(&mPID)) / 256.0) / 10000.0;
+    auto lSetpoint_C = static_cast<double>(Filter_SP_GetOutput_FP(&mSetpointFilter)) / 256.0;
+    auto lOven_C     = mOven.GetTemp();
+    auto lPower      = (static_cast<double>(PID_Oven_GetOutput_FP(&mPID)) / 256.0) / 10000.0;
 
     printf("%6.1f  %6.1f  %6.4f  %6.1f  %6.1f  %6.1f  %6.1f\n",
         aT_s,
-        lFCon_C,
+        lSetpoint_C,
         lPower,
         mElement.GetTemp(),
         lOven_C,
@@ -139,6 +183,20 @@ void Test_PID::PrintLine(double aT_s, FILE* aCSV) const
 
     if (nullptr != aCSV)
     {
-        fprintf(aCSV, "%f;%f;%f;%f\n", aT_s, lFCon_C, lPower, lOven_C);
+        fprintf(aCSV, "%f;%f;%f;%f\n", aT_s, lSetpoint_C, lPower, lOven_C);
     }
 }
+
+// Internal
+// //////////////////////////////////////////////////////////////////////////
+
+int32_t Test_PID::GetFilteredSetpoint_FP() const { return Filter_SP_GetOutput_FP(&mSetpointFilter); }
+int32_t Test_PID::GetOvenTemperature_FP () const { return static_cast<int32_t>(mOven.GetTemp() * 256.0); }
+int32_t Test_PID::GetSetpoint_FP        () const { return Filter_SP_GetInput_FP(&mSetpointFilter); }
+
+// Static functions
+// //////////////////////////////////////////////////////////////////////////
+
+int32_t GetSetpoint        () { return sThis->GetSetpoint_FP        (); }
+int32_t GetFilteredSetpoint() { return sThis->GetFilteredSetpoint_FP(); }
+int32_t GetOvenTemperature () { return sThis->GetOvenTemperature_FP (); }

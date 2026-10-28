@@ -8,9 +8,8 @@
 #pragma once
 
 // ===== KMS-uC =============================================================
-#include <Filter_FIR.h>
-#include <Filter_MD.h>
-#include <PID.h>
+#include <Filter_SP.h>
+#include <PID_Oven.h>
 
 // ===== Local ==============================================================
 #include "Element.h"
@@ -24,7 +23,7 @@ public:
 
     Test_PID();
 
-    void SetConsign(double aConsign_C);
+    void SetSetpoint(double aSetpoint_C);
 
     // ===== ITest ==========================================================
     virtual ~Test_PID() override;
@@ -32,13 +31,18 @@ public:
     virtual void PrintHeader(FILE* aCSV) const override;
     virtual void PrintLine(double aT_s, FILE* aCSV) const override;
 
+// Internal
+
+    int32_t GetFilteredSetpoint_FP() const;
+    int32_t GetOvenTemperature_FP () const;
+    int32_t GetSetpoint_FP        () const;
+
 protected:
 
     Element mElement;
     Oven    mOven;
 
-    Filter_MD  mConsignFilter;
-    PID        mPID;
-    Filter_FIR mTempFilter;
+    Filter_SP mSetpointFilter;
+    PID_Oven  mPID;
 
 };

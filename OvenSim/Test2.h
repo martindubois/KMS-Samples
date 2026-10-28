@@ -24,7 +24,7 @@ public:
 
 inline Test2::Test2()
 {
-    SetConsign(1000.0);
+    SetSetpoint(1000.0);
 }
 
 inline Test2::~Test2() {}

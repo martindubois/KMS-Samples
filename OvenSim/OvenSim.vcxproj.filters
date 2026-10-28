@@ -33,14 +33,17 @@
     <ClCompile Include="..\..\KMS-uC\Sources\Filter_MD.c">
       <Filter>Source Files\KMS-uC</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\KMS-uC\Sources\Filter_FIR.c">
-      <Filter>Source Files\KMS-uC</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\KMS-uC\Sources\PID.c">
-      <Filter>Source Files\KMS-uC</Filter>
-    </ClCompile>
     <ClCompile Include="Test_OpenLoop.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\KMS-uC\Sources\Filter_SP.c">
+      <Filter>Source Files\KMS-uC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\KMS-uC\Sources\PID_Oven.c">
+      <Filter>Source Files\KMS-uC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\KMS-uC\Sources\Table.c">
+      <Filter>Source Files\KMS-uC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
